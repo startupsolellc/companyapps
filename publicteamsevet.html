@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>My Teams Events</title>
+    <style>
+      .events-container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+
+      .event {
+        background-color: lightgray;
+        padding: 20px;
+        margin-bottom: 20px;
+      }
+
+      .subject {
+        font-weight: bold;
+        font-size: 18px;
+        margin-bottom: 10px;
+      }
+
+      .start-time,
+      .end-time {
+        font-size: 14px;
+        color: gray;
+        margin-bottom: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="events-container">
+      <h2>My Teams Events</h2>
+      <div id="events-list">
+        <!-- Events will be displayed here -->
+      </div>
+    </div>
+
+    <script>
+      // API endpoint URL
+      const apiUrl = "https://outlook.office.com/api/v2.0/me/events";
+
+      // Get data from API
+      async function getEvents() {
+        try {
+          const response = await fetch(apiUrl, {
+            headers: {
+              Authorization: "Bearer " + accessToken,
+              "Content-Type": "application/json",
+            },
+          });
+          const data = await response.json();
+          return data;
+        } catch (error) {
+          console.error(error);
+        }
+      }
+
+      // Display events on the page
+      async function displayEvents() {
+        const events = await getEvents();
+
+        const eventsList = document.getElementById("events-list");
+        events.value.forEach((event) => {
+          const eventContainer = document.createElement("div");
+          eventContainer.classList.add("event");
+
+          const subject = document.createElement("h3");
+          subject.classList.add("subject");
+          subject.textContent = event.Subject;
+          eventContainer.appendChild(subject);
+
+          const startTime = document.createElement("p");
+          startTime.classList.add("start-time");
+          startTime.textContent = new Date(event.Start).toLocaleString();
+          eventContainer.appendChild(startTime);
+
+          const endTime = document.createElement("p");
+          endTime.classList.add("end-time");
+          endTime.textContent = new Date(event.End).toLocaleString();
+          eventContainer.appendChild(endTime);
+
+          eventsList.appendChild(eventContainer);
+        });
+      }
+
+      displayEvents();
+    </script>
+  </body>
+</html>
