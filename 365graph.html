@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script>
+    $(document).ready(function() {
+      $.ajax({
+        url: "https://graph.microsoft.com/v1.0/me/calendar/calendarView?startDateTime={startDate}&endDateTime={endDate}",
+        type: "GET",
+        headers: {
+          "Authorization": "Bearer {token}",
+          "Content-Type": "application/json"
+        },
+        success: function(data) {
+          // Process the data to show the events
+        }
+      });
+    });
+  </script>
+</head>
+<body>
+  <div id="events">
+  </div>
+</body>
+</html>
